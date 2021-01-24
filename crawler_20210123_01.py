@@ -263,3 +263,5 @@ def startCrawlering():
 
     if f is not None:
         f.close
+
+startCrawlering()        
