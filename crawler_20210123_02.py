@@ -14,7 +14,7 @@ headers = {'User-Agent': 'Mozilla/5.0'}                             # 봇 방지
 
 # 파일 변수 글로벌로 이동
 nowDate = datetime.now()
-f = open(nowDate.strftime('%Y-%m-%d') + '.txt', mode='wt', encoding='utf-8') #파일 작성 시간이 길어져서 년월일로 파일명 생성
+f = open(nowDate.strftime('%Y-%m-%d') + '.txt', mode='wt', encoding='utf-8') #파일 작성 시간이 길어져서 년월일로 파일명 생성                                                            #함수에서 바로 사용하려고 전역으로 설정
 
 # 이미지 해상도 확인 2021.01.23 병합
 def getImageInfo(imgUrl):
@@ -96,13 +96,13 @@ def getDetail(title, detailUrl):
         detailSoup = BeautifulSoup(detailHtml, 'html.parser')
         
         # article 태그만 데이터만 사용함
-        articleBody = detailSoup.find('article')  # article 태그 찾기 
+        articleBody = detailSoup.find('article')  #article 태그 찾기 
 
-        # span class="fr-video" 있는 article은 PASS 2021.01.19 수정
+        # GIF 최적화 문자열이 있는 article은 PASS 2021.01.03 추가
         articleBodyText = str(articleBody)
-        articleBodyGIFText = articleBodyText.find("fr-video")
+        articleBodyGIFText = articleBodyText.find("GIF 최적화")
         if articleBodyGIFText >=0:
-            print("articleBody span class=fr-video >=0 is pass")
+            print("articleBodyGIFText >=0 is pass")
             return
 
         # articleBody 에서 div 영역을 찾아서, p 로 바꿈...
@@ -155,12 +155,12 @@ def getDetail(title, detailUrl):
             # 유튜브 주소 길이 판단
             if utubeShrotUrlIndex >= 0:
                 utubeKeyIndex = pLineText.find('https://youtu.be/')
-                utubeKey = pLineText[utubeKeyIndex+17:utubeKeyIndex+17+11] # 파싱 수정 2021.01.03 추가
+                utubeKey = pLineText[utubeKeyIndex+17:utubeKeyIndex+17+11] #파싱 수정 2021.01.03 추가
                 # 유튜브 키값을 iframe 태그로 변경
                 tempStr = '<p><iframe style="width:560; height:315px" src="https://www.youtube.com/embed/' + utubeKey + '?rel=0&vq=hd1080" frameborder="0" allowfullscreen></iframe>'
             elif utubeUrlIndex >= 0:
                 utubeKeyIndex = pLineText.find('https://youtube.com/watch?v=')
-                utubeKey = pLineText[utubeKeyIndex+28:utubeKeyIndex+28+11] # 파싱 수정 2021.01.03 추가
+                utubeKey = pLineText[utubeKeyIndex+28:utubeKeyIndex+28+11] #파싱 수정 2021.01.03 추가
                 # 유튜브 키값을 iframe 태그로 변경
                 tempStr = '<p><iframe style="width:560; height:315px" src="https://www.youtube.com/embed/' + utubeKey + '?rel=0&vq=hd1080" frameborder="0" allowfullscreen></iframe>'
             elif utubewwwUrlIndex >= 0:

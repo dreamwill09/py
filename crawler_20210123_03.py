@@ -98,11 +98,11 @@ def getDetail(title, detailUrl):
         # article 태그만 데이터만 사용함
         articleBody = detailSoup.find('article')  # article 태그 찾기 
 
-        # span class="fr-video" 있는 article은 PASS 2021.01.19 수정
+        # GIF 최적화 문자열이 있는 article은 PASS 2021.01.03 추가
         articleBodyText = str(articleBody)
-        articleBodyGIFText = articleBodyText.find("fr-video")
+        articleBodyGIFText = articleBodyText.find("GIF 최적화")
         if articleBodyGIFText >=0:
-            print("articleBody span class=fr-video >=0 is pass")
+            print("articleBodyGIFText >=0 is pass")
             return
 
         # articleBody 에서 div 영역을 찾아서, p 로 바꿈...
