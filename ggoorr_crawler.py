@@ -355,7 +355,7 @@ def searchList(page):
 # sys.exit()
 
 # gamechosun.co.kr 이미지 있는 경우
-# getDetail("title", "https://ggoorr.net/all/10917601")
+# getDetail("title", "https://ggoorr.net/all/10918226")
 # sys.exit()
 
 
