@@ -18,69 +18,70 @@ f = open(nowDate.strftime('%Y-%m-%d') + '.txt', mode='wt', encoding='utf-8') #�
 
 # 이미지 해상도 확인 2021.01.23 병합
 def getImageInfo(imgUrl):
-       req = urllib2.Request(imgUrl, headers={"Range": "5000", "User-Agent": 
-       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36"})
 
-       r = urllib2.urlopen(req)
-       data = r.read()
+        req = urllib2.Request(imgUrl, headers={"Range": "5000", "User-Agent": 
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36"})
 
-       size = len(data)
-       # print(size)
-       height = -1
-       width = -1
-       content_type = ''
+        r = urllib2.urlopen(req)
+        data = r.read()
 
-       # handle GIFs
-       if (size >= 10) and data[:6] in (b'GIF87a', b'GIF89a'):
-           # Check to see if content_type is correct
-           content_type = 'image/gif'
-           w, h = struct.unpack(b"<HH", data[6:10])
-           width = int(w)
-           height = int(h)
+        size = len(data)
+        # print(size)
+        height = -1
+        width = -1
+        content_type = ''
 
-       # See PNG 2. Edition spec (http://www.w3.org/TR/PNG/)
-       # Bytes 0-7 are below, 4-byte chunk length, then 'IHDR'
-       # and finally the 4-byte width, height
-       elif ((size >= 24) and data.startswith(b'\211PNG\r\n\032\n')
-             and (data[12:16] == b'IHDR')):
-           content_type = 'image/png'
-           w, h = struct.unpack(b">LL", data[16:24])
-           width = int(w)
-           height = int(h)
+        # handle GIFs
+        if (size >= 10) and data[:6] in (b'GIF87a', b'GIF89a'):
+            # Check to see if content_type is correct
+            content_type = 'image/gif'
+            w, h = struct.unpack(b"<HH", data[6:10])
+            width = int(w)
+            height = int(h)
 
-       # Maybe this is for an older PNG version.
-       elif (size >= 16) and data.startswith(b'\211PNG\r\n\032\n'):
-           # Check to see if we have the right content type
-           content_type = 'image/png'
-           w, h = struct.unpack(b">LL", data[8:16])
-           width = int(w)
-           height = int(h)
+        # See PNG 2. Edition spec (http://www.w3.org/TR/PNG/)
+        # Bytes 0-7 are below, 4-byte chunk length, then 'IHDR'
+        # and finally the 4-byte width, height
+        elif ((size >= 24) and data.startswith(b'\211PNG\r\n\032\n')
+                and (data[12:16] == b'IHDR')):
+            content_type = 'image/png'
+            w, h = struct.unpack(b">LL", data[16:24])
+            width = int(w)
+            height = int(h)
 
-       # handle JPEGs
-       elif (size >= 2) and data.startswith(b'\377\330'):
-           content_type = 'image/jpeg'
-           jpeg = io.BytesIO(data)
-           jpeg.read(2)
-           b = jpeg.read(1)
-           try:
-               while (b and ord(b) != 0xDA):
-                   while (ord(b) != 0xFF): b = jpeg.read(1)
-                   while (ord(b) == 0xFF): b = jpeg.read(1)
-                   if (ord(b) >= 0xC0 and ord(b) <= 0xC3):
-                       jpeg.read(3)
-                       h, w = struct.unpack(b">HH", jpeg.read(4))
-                       break
-                   else:
-                       jpeg.read(int(struct.unpack(b">H", jpeg.read(2))[0])-2)
-                   b = jpeg.read(1)
-               width = int(w)
-               height = int(h)
-           except struct.error:
-               pass
-           except ValueError:
-               pass
+        # Maybe this is for an older PNG version.
+        elif (size >= 16) and data.startswith(b'\211PNG\r\n\032\n'):
+            # Check to see if we have the right content type
+            content_type = 'image/png'
+            w, h = struct.unpack(b">LL", data[8:16])
+            width = int(w)
+            height = int(h)
 
-       return content_type, width, height
+        # handle JPEGs
+        elif (size >= 2) and data.startswith(b'\377\330'):
+            content_type = 'image/jpeg'
+            jpeg = io.BytesIO(data)
+            jpeg.read(2)
+            b = jpeg.read(1)
+            try:
+                while (b and ord(b) != 0xDA):
+                    while (ord(b) != 0xFF): b = jpeg.read(1)
+                    while (ord(b) == 0xFF): b = jpeg.read(1)
+                    if (ord(b) >= 0xC0 and ord(b) <= 0xC3):
+                        jpeg.read(3)
+                        h, w = struct.unpack(b">HH", jpeg.read(4))
+                        break
+                    else:
+                        jpeg.read(int(struct.unpack(b">H", jpeg.read(2))[0])-2)
+                    b = jpeg.read(1)
+                width = int(w)
+                height = int(h)
+            except struct.error:
+                pass
+            except ValueError:
+                pass
+
+        return content_type, width, height
 
 # 상세 게시글 HTML 수집 함수
 def getDetail(title, detailUrl):
@@ -106,11 +107,16 @@ def getDetail(title, detailUrl):
             return
 
         # articleBody 에서 div 영역을 찾아서, p 로 바꿈...
-        xeContentDiv = articleBody.div.div.contents
-        xeContentDivStr = str(xeContentDiv)
-        xeContentDivStr = xeContentDivStr.replace("<div","<p")
-        xeContentDivStr = xeContentDivStr.replace("div>","p>")        
-        articleBody = BeautifulSoup(xeContentDivStr, 'html.parser')
+        # xeContentDiv = articleBody.div.div.contents
+        # xeContentDivStr = str(xeContentDiv)
+        # xeContentDivStr = xeContentDivStr.replace("<div","<p")
+        # xeContentDivStr = xeContentDivStr.replace("div>","p>")
+        # articleBody = BeautifulSoup(xeContentDivStr, 'html.parser')
+
+        # div class xe_content 내의 child 를 순차적으로 호출하여 div 로 시작하는 첫번째 태그만 <p> 로 변경 
+        # for child in articleBody.div.div.children:
+        #     if child.name == 'div':
+        #         child.name = 'p'
 
         # 게시글 머릿말/꼬리말 설정
         articleHeader = '<article><div id="article_1"><div>'
@@ -120,7 +126,8 @@ def getDetail(title, detailUrl):
         articleString = articleHeader
 
         # 02 article 태그 안에서 <p>태그들을 찾아서 저장함
-        for pLine in articleBody.select("p"):
+        # for pLine in articleBody.select("p"):
+        for pLine in articleBody.div.div.children:     # p 로 처리하는 방식에서 문제가 많아 child 방식으로 변경
 
             # 이미지 태그가 있는경우, 이미지의 사이즈를 체크 및 수정
             for img in pLine.select("img"):
@@ -184,7 +191,7 @@ def getDetail(title, detailUrl):
         # 04-01 cdn.ggoorr.net은 프록시 서버 경유
         articleString = articleString.replace("https://cdn.ggoorr.net", "https://t1.daumcdn.net/thumb/R0x0/?fname=https://cdn.ggoorr.net")
         # 04-02 img 태그 앞에 줄 바꿈
-        articleString = articleString.replace("<img", "<p><img")
+        # articleString = articleString.replace("<img", "<p><img")
         # 04-03 img 폭을 800 2020.12.29 추가 2021.01.23 삭제
         # articleString = articleString.replace("<img", "<img width=800")
         
