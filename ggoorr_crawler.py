@@ -142,6 +142,9 @@ def getDetail(title, detailUrl):
                 elif ".daumcdn.net" in imgSrcText:
                     # .daumcdn.net가 있을 경우 폭을 800으로 변경
                     img['src'] = imgSrcText.replace("R1024x0", "R800x0")
+                elif "gamechosun.co.kr" in imgSrcText: 
+                    # 2021.01.26 gamechosun.co.kr 문제 있어서 예외 처리
+                    img['width'] = 800
                 else:
                     # 그 외 경우는 폭이 800을 초과할 경우 width 속성을 800으로 지정
                     imgArr = getImageInfo( img['src'] )
