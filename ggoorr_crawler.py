@@ -148,7 +148,8 @@ def getDetail(title, detailUrl):
                     # print(str(imgArr))
                     if imgArr != None and len(imgArr) == 3 and int(imgArr[1]) > 800:
                         img['width'] = 800
-
+                # 이미지 태그를 P태그로 감싸기
+                img.wrap(detailSoup.new_tag("p"))
             
             # 유튜브 주소를 찾아서 링크 url 변경 처리, 유튜브 주소 없을경우는 변경없이 저장
             pLineText = str(pLine)
@@ -344,6 +345,10 @@ def searchList(page):
 
 # 텍스트가 중복되는 경우
 # getDetail("title", "https://ggoorr.net/all/10909429")
+# sys.exit()
+
+# 이미지 태그 p 로 감싸기 확인용 
+# getDetail("title", "https://ggoorr.net/all/10917601")
 # sys.exit()
 
 
