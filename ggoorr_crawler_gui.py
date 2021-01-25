@@ -4,16 +4,34 @@ import sys
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import myImageLib
+import time
 
 
-root = Tk()
-root.title("ggoorr_crawler GUI")
-root.geometry("640x480") # 가로 * 세로
+window = Tk() # 윈도우이름=tkinter.Tk()를 이용하여 가장 상위 레벨의 윈도우 창을 생성
+window.title("ggoorr crawler gui")
+window.geometry("640x480") # 가로 * 세로
+
+topFrame = Frame(window)
+topFrame.pack(side = TOP)
+ 
+bottomFrame = Frame(window)
+bottomFrame.pack(side=BOTTOM)
 
 
-txt = Text(root, width=640, height=33)
-txt.insert(END, "LOG.......\n")
-txt.pack()
+titleLabel=Label(topFrame, text="시작 버튼을 클릭하면 크롤링을 시작합니다.")
+titleLabel.pack()
+
+logLabel=Label(bottomFrame, width=640, height=33)
+logLabel.config(text="로그 한줄 추가요.")
+logLabel.config(text="로그 한줄 추가요.")
+logLabel.pack()
+
+# txt = Text(bottomFrame, width=640, height=33)
+# txt.insert(END, "로그는 여기를 보세요. 1\n")
+# time.sleep(1)
+# txt.insert(END, "로그는 여기를 보세요. 2\n")
+# time.sleep(1)
+# txt.pack()
 
 
 #전역 변수 설정X
@@ -45,7 +63,7 @@ def getDetail(title, detailUrl):
         articleBodyText = str(articleBody)
         articleBodyGIFText = articleBodyText.find("GIF 최적화")
         if articleBodyGIFText >=0:
-            txt.insert(END, ("articleBodyGIFText >=0 is pass...\n"))
+            logLabel.insert(END, ("articleBodyGIFText >=0 is pass...\n"))
             return
 
         # articleBody 에서 div 영역을 찾아서, p 로 바꿈...
@@ -124,17 +142,17 @@ def getDetail(title, detailUrl):
         fileContent += articleString
         fileContent += "\n"
         if (f is not None) and f.write(fileContent):
-            txt.insert(END, ("fileContent write OK \n"))
+            logLabel.config(text="fileContent write OK \n")
     else :
-        txt.insert(END, (" >>>> GET ERROR..... \n"))
+        logLabel.config(text=" >>>> GET ERROR..... \n")
     
-    #txt.insert(END, ("------------------------------------ end of getDetail -----------------------------------")
+    #logLabel.config(text="------------------------------------ end of getDetail -----------------------------------")
 
 # 게시판 목록 처리 함수 : 게시글 목록에서 해당 게시물이 작성 대상인 경우 게시글 상세 처리(getDetail)를 호출
 # 게시글 처리 대상 - 전일 오전 7시 ~ 당일 오전 6시 59분 59초
 def searchList(page):
 
-    txt.insert(END, ("=========================================== " + str(page) + " page start ===================================== \n"))
+    logLabel.config(text="=========================================== " + str(page) + " page start ===================================== \n")
     res = requests.get(GGOORR_DETAIL_URL + str(page), headers=headers)
 
     if res.status_code == 200:
@@ -151,12 +169,12 @@ def searchList(page):
         nCnt = 0 # 게시글 처리 순서 저장
         #tr - 개별 게시글 확인
         for trOne in contentsBody.select('tr'):
-            txt.insert(END, ("--------------------------------------- [ " + str(page) + " page / " + str(nCnt) + " line ] --------------------------------------- \n"))
+            logLabel.config(text="--------------------------------------- [ " + str(page) + " page / " + str(nCnt) + " line ] --------------------------------------- \n")
 
             #공지글은 생략
             if None != trOne.get('class'):
                 if ("notice" == trOne['class'][0]):
-                    txt.insert(END, ("공지는 PASS!! \n"))
+                    logLabel.config(text="공지는 PASS!! \n")
                     nCnt+=1
                     continue
             else:
@@ -203,11 +221,11 @@ def searchList(page):
                 # end of [for tdTag in trOne.select('td'):]
 
                 # 게시물 1개에 대한 처리여부 확인 로직 시작......
-                txt.insert(END, ("category : " + cate + "\n"))
-                txt.insert(END, ("title : " + title + "\n"))
-                txt.insert(END, ("author : " + author + "\n"))
-                txt.insert(END, ("writetime : " + writetime.strftime('%Y-%m-%d %H:%M:%S') + "\n"))
-                txt.insert(END, ("detailUrl : " + detailUrl + "\n"))
+                logLabel.config(text="category : " + cate + "\n")
+                logLabel.config(text="title : " + title + "\n")
+                logLabel.config(text="author : " + author + "\n")
+                logLabel.config(text="writetime : " + writetime.strftime('%Y-%m-%d %H:%M:%S') + "\n")
+                logLabel.config(text="detailUrl : " + detailUrl + "\n")
 
                 #전일 오전 7시
                 yesterday = datetime.today() - timedelta(days=1)
@@ -217,22 +235,22 @@ def searchList(page):
                 todate = datetime(datetime.today().year, datetime.today().month, datetime.today().day, 6, 59, 59)
 
                 if(writetime > todate):
-                    txt.insert(END, ("작성은 안하지만, 다음 게시물 조회" + "\n"))
+                    logLabel.config(text="작성은 안하지만, 다음 게시물 조회" + "\n")
                     pass
                 elif writetime <= fromdate:
-                    txt.insert(END, ("작성 대상 아님 - 더이상 게시물 조회하지 않음" + "\n"))
+                    logLabel.config(text="작성 대상 아님 - 더이상 게시물 조회하지 않음" + "\n")
                     return False
                 else :
-                    txt.insert(END, ("작성 대상 맞음" + "\n"))
+                    logLabel.config(text="작성 대상 맞음" + "\n")
                     getDetail(title, detailUrl)
 
             nCnt+=1
             # end of [for trOne in contentsBody.select('tr'):]
         
         return True
-        txt.insert(END, ("=========================================== end of List =====================================" + "\n"))
+        logLabel.config(text="=========================================== end of List =====================================" + "\n")
     else :
-        txt.insert(END, (GGOORR_DETAIL_URL + str(page) + " >>>> GET ERROR....." + "\n"))
+        logLabel.config(text="GGOORR_DETAIL_URL + str(page) + " + ">>>> GET ERROR....." + "\n")
 
 # youtube test
 # getDetail("title", "https://ggoorr.net/enter/10765153")
@@ -277,7 +295,8 @@ def startCrawlering():
         f.close  
 
 
-btn1 = Button(root, text="버튼1", padx=5, pady=10,  command=startCrawlering)
-btn1.pack()
+startBtn = Button(topFrame, text="버튼1", padx=5, pady=10,  command=startCrawlering, repeatdelay=1000)
+startBtn.pack()
+# startBtn.place(x= 100, y= 100)
 
-root.mainloop()        
+window.mainloop()    # 윈도우 창을 윈도우가 종료될 때 까지 실행
