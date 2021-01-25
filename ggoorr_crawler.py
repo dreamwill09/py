@@ -354,6 +354,10 @@ def searchList(page):
 # getDetail("title", "https://ggoorr.net/all/10917601")
 # sys.exit()
 
+# gamechosun.co.kr 이미지 있는 경우
+# getDetail("title", "https://ggoorr.net/all/10917601")
+# sys.exit()
+
 
 # 메인 시작 : 1-20 페이지까지 for loop
 def startCrawlering():
