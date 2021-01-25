@@ -105,12 +105,12 @@ def getDetail(title, detailUrl):
             print("articleBody span class=fr-video >=0 is pass")
             return
 
-        # articleBody 에서 div 영역을 찾아서, p 로 바꿈...
-        xeContentDiv = articleBody.div.div.contents
-        xeContentDivStr = str(xeContentDiv)
-        xeContentDivStr = xeContentDivStr.replace("<div","<p")
-        xeContentDivStr = xeContentDivStr.replace("div>","p>")        
-        articleBody = BeautifulSoup(xeContentDivStr, 'html.parser')
+        # articleBody 에서 div 영역을 찾아서, p 로 바꿈...2021.01.25 이상한 문제가 생겨서 주석 처리
+        # xeContentDiv = articleBody.div.div.contents
+        # xeContentDivStr = str(xeContentDiv)
+        # xeContentDivStr = xeContentDivStr.replace("<div","<p")
+        # xeContentDivStr = xeContentDivStr.replace("div>","p>")        
+        # articleBody = BeautifulSoup(xeContentDivStr, 'html.parser')
 
         # 게시글 머릿말/꼬리말 설정
         articleHeader = '<article><div id="article_1"><div>'
