@@ -101,9 +101,15 @@ def getDetail(title, detailUrl):
 
         # span class="fr-video" 있는 article은 PASS 2021.01.19 수정
         articleBodyText = str(articleBody)
-        articleBodyGIFText = articleBodyText.find("fr-video")
-        if articleBodyGIFText >=0:
+        articleBodyGIFText1 = articleBodyText.find("fr-video")
+        if articleBodyGIFText1 >=0:
             print("articleBody span class=fr-video >=0 is pass")
+            return
+
+        # video class="gifmp4_video" 있는 article은 PASS 2021.01.26 추가
+        articleBodyGIFText2 = articleBodyText.find("gifmp4_video")
+        if articleBodyGIFText2 >=0:
+            print("articleBody video class=gifmp4_video >=0 is pass")
             return
 
         # articleBody 에서 div 영역을 찾아서, p 로 바꿈...
