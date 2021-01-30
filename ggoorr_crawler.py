@@ -14,7 +14,8 @@ headers = {'User-Agent': 'Mozilla/5.0'}                             # 봇 방지
 
 # 파일 변수 글로벌로 이동
 nowDate = datetime.now()
-f = open(nowDate.strftime('%Y-%m-%d') + '.txt', mode='wt', encoding='utf-8') #파일 작성 시간이 길어져서 년월일로 파일명 생성
+# 파일 작성 시간이 길어져서 년월일로 파일명 생성
+f = open(nowDate.strftime('%Y-%m-%d') + '.txt', mode='wt', encoding='utf-8')
 
 # 이미지 해상도 확인 2021.01.23 병합
 def getImageInfo(imgUrl):
