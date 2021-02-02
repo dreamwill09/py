@@ -1,5 +1,5 @@
 import requests
-import pandas as pd
+# import pandas as pd
 from bs4 import BeautifulSoup
 
 # 
@@ -19,9 +19,9 @@ if res.status_code == 200:
     soup = BeautifulSoup(html, 'html.parser')
 
     # tbody 에 필요한 게시글 목록이 있어 해당 영역 가져오기 처리
-    youtubebody = soup.select('#primary > ytd-section-list-renderer')
+    youtubebody = soup.select('.style-scope.ytd-section-list-renderer')
 
-    print(len(youtubebody))
+    print(youtubebody)
 else:
         print(">>>> Youtube GET ERROR.....")
 
