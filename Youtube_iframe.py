@@ -38,7 +38,7 @@ testurl = 'https://youtu.be/Pi9dzHkdTiA' # (Required)
 width = '560' # (Optional)
 height = '315' # (Optional)
 
-utubeShrotUrlIndex  = testurl.find('https://youtu.be/') # 유튜브 짧은 주소는 길게 변경 필요
+utubeShrotUrlIndex  = testurl.find('https://youtu.be/')                  # 유튜브 짧은 주소는 길게 변경 필요
 utubeUrlIndex       = testurl.find('https://youtube.com/watch?v=')       # 유튜브 긴 주소는 Video ID만 추출
 utubewwwUrlIndex    = testurl.find('https://www.youtube.com/watch?v=')   # 유튜브 www 긴 주소는 Video ID만 추출
 
