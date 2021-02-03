@@ -1,31 +1,85 @@
-import requests
-# import pandas as pd
 from bs4 import BeautifulSoup
+import pandas as pd
+import json
+import os
+import requests
 
-# 
-url = ['https://www.youtube.com/user/JTBC10news/videos']
-# url = ['https://www.youtube.com/user/JTBC10news/videos', 'https://www.youtube.com/c/14FMBC/videos']
-headers = {'User-Agent': 'Mozilla/5.0'}                             # 봇 방지 웹사이트 회피
+url = input('https://youtube.com/watch?v=Pi9dzHkdTiA')
+Vid={}
+Link = url
+source= requests.get(url).text
+soup=BeautifulSoup(source,'lxml')
+div_s = soup.findAll('div')
 
-# 정해진 유튜브 채널의 동영상 탭 내 정해진 날짜 시간을 만족하는 동영상 제목과 Iframe Tag를 생성하는 프로그램
-
-res = requests.get(url[0], headers=headers)
-
-if res.status_code == 200:
-    # 응답 html코드를 text로 변환
-    html = res.text
-
-    # 응답받은 html코드를 BeautifulSoup에 사용하기 위하여 인스턴스 지정
-    soup = BeautifulSoup(html, 'html.parser')
-
-    # tbody 에 필요한 게시글 목록이 있어 해당 영역 가져오기 처리
-    youtubebody = soup.select('.style-scope.ytd-section-list-renderer')
-
-    print(youtubebody)
-else:
-        print(">>>> Youtube GET ERROR.....")
+Title = div_s[1].find('span',class_='watch-title').text.strip()
+Vid['Title']=Title
+Vid['Link']=Link
+Channel_name = div_s[1].find('a',class_="yt-uix-sessionlink spf-link").text.strip()
+Channel_link = ('www.youtube.com'+div_s[1].find('a',class_="yt-uix-sessionlink spf-link").get('href'))
+Subscribers = div_s[1].find('span',class_="yt-subscription-button-subscriber-count-branded-horizontal yt-subscriber-count").text.strip()
+if len(Channel_name) ==0:
+    Channel_name ='None'
+    Channel_link = 'None'
+    Subscribers = 'None'
+Vid['Channel']=Channel_name
+Vid['Channel_link']=Channel_link
+Vid['Channel_subscribers']=Subscribers
 
 
+Category_index = {
+     1 : 'Film & Animation',
+     2 : 'Autos & Vehicles',
+     10 : 'Music',
+     15 : 'Pets & Animals',
+     17 : 'Sports',
+     19 : 'Travel & Events',
+     20 : 'Gaming',
+     22 : 'People & Blogs',
+     23 : 'Comedy',
+     24 : 'Entertainment',
+     25 : 'News & Politics',
+     26 : 'Howto & Style',
+     27 : 'Education',
+     28 : 'Science & Technology',
+     29 : 'Nonprofits & Activism'}
+Sp = div_s[1].text.split(':')
+subs = 'categoryId'
+for j in range(len(Sp)):
+    if subs in Sp[j]:
+        value =int(Sp[j+1].split(',')[0])
+Video_category=Category_index[value]        
+Vid['Category']=Video_category
 
-# print(url[0])
-# print(url[1])
+View_count = div_s[1].find(class_= 'watch-view-count')
+View_count = View_count.text.strip().split()[0]
+Vid['Views']=View_count
+
+
+Likes = div_s[1].find('button',class_="yt-uix-button yt-uix-button-size-default yt-uix-button-opacity yt-uix-button-has-icon no-icon-markup like-button-renderer-like-button like-button-renderer-like-button-unclicked yt-uix-clickcard-target yt-uix-tooltip" ).text.strip()
+Vid['Likes']=Likes
+Dislikes = div_s[1].find('button',class_="yt-uix-button yt-uix-button-size-default yt-uix-button-opacity yt-uix-button-has-icon no-icon-markup like-button-renderer-dislike-button like-button-renderer-dislike-button-unclicked yt-uix-clickcard-target yt-uix-tooltip" ).text.strip()
+Vid['Dislikes']=Dislikes
+
+Related_videos = div_s[1].findAll('a',class_='content-link spf-link yt-uix-sessionlink spf-link')
+Title_Related=[]
+Link_Related =[]
+for i in range(len(Related_videos)):
+    Title_Related.append(Related_videos[i].get('title'))
+    Link_Related.append(Related_videos[i].get('href'))
+Related_dictionary = dict(zip(Title_Related, Link_Related))    
+Vid['Related_vids']=Related_dictionary
+
+
+
+
+print('Title of the video url:', Title)
+print('Channel :', Channel_name)
+print('Link:', Channel_link)
+print('Number of Subscibers:', Subscribers)
+print('Category for the video url:',Video_category)
+print('View count for the video url:', View_count)
+print('Likes:',Likes,'  ','Dislikes:',Dislikes)
+
+
+with open('vfile.json', 'w', encoding='utf8') as ou:
+    json.dump(Vid, ou, ensure_ascii=False)

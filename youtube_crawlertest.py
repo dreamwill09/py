@@ -1,27 +1,39 @@
-import requests
-import pandas as pd
-from bs4 import BeautifulSoup
-
-keyword = '미르방'
-
-req = requests.get('https://www.youtube.com/results?search_query=' + keyword)
-html = req.text
-soup = BeautifulSoup(html, 'html.parser')
-my_titles = soup.select(
-    'h3 > a'
-    )
-
-title = []
-url = []
-print(title, url)
-for idx in my_titles:
-    if idx.get('href')[:7] != '/watch?':
-        pass
-    else:
-        title.append(idx.text)
-        url.append(idx.get('href'))
-        
-title_list = pd.DataFrame(url, columns = ['url'])
-title_list['title'] = title
-
-print(title_list)
+# importing the libraries 
+from bs4 import BeautifulSoup 
+import requests 
+  
+# creating function 
+def scrape_info(url): 
+      
+    # getting the request from url 
+    r = requests.get(url) 
+      
+    # converting the text 
+    s = BeautifulSoup(r.text, "html.parser") 
+      
+    # finding meta info for title 
+    title = s.find("span", class_="title style-scope ytd-video-primary-info-renderer").text.replace("\n", "") 
+      
+    # finding meta info for views 
+    views = s.find("div", class_="watch-view-count").text 
+      
+    # finding meta info for likes 
+    likes = s.find("span", class_="like-button-renderer").span.button.text 
+      
+    # saving this data in dictionary 
+    data = {'title':title, 'views':views, 'likes':likes} 
+      
+    # returning the dictionary 
+    return data 
+  
+# main function 
+if __name__ == "__main__": 
+      
+    # URL of the video 
+    url ="https://www.youtube.com/watch?time_continue=17&v=2wEA8nuThj8"
+      
+    # calling the function 
+    data = scrape_info(url) 
+      
+    # printing the dictionary 
+    print(data) 
