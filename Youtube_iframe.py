@@ -1,4 +1,5 @@
 from yt_iframe import yt # pip install yt-iframe
+from datetime import datetime, timedelta
 
 # iframe TAG 생성할 유튜브 채널들 동영상 중 
 # 전일 오전 7시 ~ 당일 오전 6시 59분 59초 해당할 경우
@@ -45,6 +46,14 @@ utubewwwUrlIndex    = testurl.find('https://www.youtube.com/watch?v=')   # 유�
 utubeKey = ""       # 유튜브 키값 초기화
 utubeKeyIndex = 0   # 유튜브 키 체크값 초기화
 url = ""            # url 초기화
+
+# 전일 오전 7시
+yesterday = datetime.today() - timedelta(days=1)
+fromdate = datetime(yesterday.year, yesterday.month, yesterday.day, 7, 0, 0)
+
+# 당일 오전 6시 59분 59초
+todate = datetime(datetime.today().year, datetime.today().month, datetime.today().day, 6, 59, 59)
+
 
 if utubeShrotUrlIndex >= 0:
     utubeKeyIndex = testurl.find('https://youtu.be/')
