@@ -15,7 +15,6 @@ from yt_iframe import yt # pip install yt-iframe
 # 리뷰엉이: Owl's Review https://www.youtube.com/channel/UCrBpV_pG2kyMMEHCMTNzjAQ
 # movie trip 무비트립 https://www.youtube.com/channel/UCpr2S3SBmyjvrx9Q4pLUZHw
 # 고몽 https://www.youtube.com/channel/UCpcft4FJXgUjnxWoQYsl7Ug
-# 한상기 오토프레스 Han Sang Ki https://www.youtube.com/channel/UC-IBt8pM8hWx8wiwjcDLdIQ
 # 천재이승국 GeniusSKLee https://www.youtube.com/channel/UCu3BjLd03jxTVHXTPqZ77iQ
 # 은빛유니콘 https://www.youtube.com/channel/UCPq0i_bZeqVoVYm_u8qimDA
 # 엔스Ens https://www.youtube.com/channel/UC_Aly3X5CdojHdRDGmKi1ow
@@ -27,6 +26,7 @@ from yt_iframe import yt # pip install yt-iframe
 # sanggung상궁 https://www.youtube.com/channel/UCZUjLw9C0Tt3VECAhQO9buA
 # 엉삼 https://www.youtube.com/channel/UCu1jlal8cou2kEUK9lycRWg
 # 오토뷰(Autoview) https://www.youtube.com/channel/UCfcgDLazgMa1L92Kl3r9ZAA
+# 한상기 오토프레스 Han Sang Ki https://www.youtube.com/channel/UC-IBt8pM8hWx8wiwjcDLdIQ
 # LikeRing https://www.youtube.com/channel/UC7A1QdDXcu3zu_KS8DddL1A
 # 사람사는세상노무현재단 https://www.youtube.com/channel/UCJS9VvReVkplPwCIbxnbsjQ
 
