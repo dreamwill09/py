@@ -32,8 +32,8 @@ from datetime import datetime, timedelta
 # 사람사는세상노무현재단 https://www.youtube.com/channel/UCJS9VvReVkplPwCIbxnbsjQ
 
 
-testurl = 'https://youtu.be/Pi9dzHkdTiA' # (Required)
-# testurl = 'https://youtube.com/watch?v=Pi9dzHkdTiA&feature=youtu.be' # (Required)
+testurl = 'https://youtu.be/Pi9dzHkdTiA'                                 # (Required)
+# testurl = 'https://youtube.com/watch?v=Pi9dzHkdTiA&feature=youtu.be'     # (Required)
 # testurl = 'https://www.youtube.com/watch?v=Pi9dzHkdTiA&feature=youtu.be' # (Required)
 
 width = '560' # (Optional)
@@ -61,11 +61,11 @@ if utubeShrotUrlIndex >= 0:
     url = 'https://www.youtube.com/watch?v=' + utubeKey
 elif utubeUrlIndex >= 0:
     utubeKeyIndex = testurl.find('https://youtube.com/watch?v=')
-    utubeKey = testurl[utubeKeyIndex + 28 : utubeKeyIndex + 28 + 11] # 파싱 수정 2021.01.03 추가
+    utubeKey = testurl[utubeKeyIndex + 28 : utubeKeyIndex + 28 + 11]
     url = 'https://www.youtube.com/watch?v=' + utubeKey
 elif utubewwwUrlIndex >= 0:
     utubeKeyIndex = testurl.find('https://www.youtube.com/watch?v=')
-    utubeKey = testurl[utubeKeyIndex + 32 : utubeKeyIndex + 32 + 11]  # 파싱 추가 2021.01.18 추가
+    utubeKey = testurl[utubeKeyIndex + 32 : utubeKeyIndex + 32 + 11]
     url = 'https://www.youtube.com/watch?v=' + utubeKey
 else:
     url = testurl
