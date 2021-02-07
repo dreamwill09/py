@@ -73,8 +73,36 @@ firsturl = [soup.find_all('a', {'id':'video-title'})[n].get('href') for n in ran
 all_time = soup.find_all('span','style-scope ytd-grid-video-renderer')
 
 # time이란 변수에 시간 정보(짝수)를 저장합니다.
+# 분 전, 시간 전, 일 전, 주 전, 개월 전, 년 전
 time = [all_time[n].text for n in range(1,len(all_time),2)]
 
+# delta = ''
+# if '분' in time:
+#     # 분일 경우 작성 시간 확인
+#     timenumber = time[0:time.find('분')]
+#     writetime = datetime.today() - timedelta(minutes=int(timenumber))
+# elif '시간' in time:
+#     # 시간일 경우 작성 시간 확인
+#     timenumber = time[0:time.find('시간')]
+#     writetime = datetime.today() - timedelta(hours=int(timenumber))
+# elif '일' in time:
+#     # 일일 경우 작성 시간 확인
+#     timenumber = time[0:time.find('일')]
+#     writetime = datetime.today() - timedelta(days=int(timenumber))
+# elif '주' in time:
+#     # 주일 경우 작성 시간 확인
+#     timenumber = time[0:time.find('주')]
+#     writetime = datetime.today() - timedelta(weeks=int(timenumber))
+# elif '개월' in time:
+#     # 개월일 경우 작성 시간 확인
+#     timenumber = time[0:time.find('개월')]
+#     delta = relativedelta(months=int(timenumber))
+#     writetime = datetime.today() - delta
+# elif '년' in time:
+#     # 년일 경우 작성 시간 확인
+#     timenumber = time[0:time.find('년')]
+#     delta = relativedelta(years=int(timenumber))
+#     writetime = datetime.today() - delta
 
 width = '560' # (Optional)
 height = '315' # (Optional)
