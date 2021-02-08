@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 # iframe TAG 작성을 위해 yt를 import 한다. (pip install yt-iframe)
 from yt_iframe import yt 
+# 월, 년 단위 계산 위해서 relativedelta를 import 한다.
+from dateutil.relativedelta import relativedelta
 
 # <p>제목</p><p><a>URL</a></p><p><iframe></p> 로 작성
 
@@ -42,6 +44,9 @@ fromdate = datetime(yesterday.year, yesterday.month, yesterday.day, 7, 0, 0)
 # 당일 오전 6시 59분 59초
 todate = datetime(datetime.today().year, datetime.today().month, datetime.today().day, 6, 59, 59)
 
+# writetime global 변수로 선언
+
+
 # driver란 변수에 객체를 만들어 준다.
 driver = webdriver.Chrome(executable_path='chromedriver')
 
@@ -76,33 +81,39 @@ all_time = soup.find_all('span','style-scope ytd-grid-video-renderer')
 # 분 전, 시간 전, 일 전, 주 전, 개월 전, 년 전
 time = [all_time[n].text for n in range(1,len(all_time),2)]
 
-# delta = ''
-# if '분' in time:
-#     # 분일 경우 작성 시간 확인
-#     timenumber = time[0:time.find('분')]
-#     writetime = datetime.today() - timedelta(minutes=int(timenumber))
-# elif '시간' in time:
-#     # 시간일 경우 작성 시간 확인
-#     timenumber = time[0:time.find('시간')]
-#     writetime = datetime.today() - timedelta(hours=int(timenumber))
-# elif '일' in time:
-#     # 일일 경우 작성 시간 확인
-#     timenumber = time[0:time.find('일')]
-#     writetime = datetime.today() - timedelta(days=int(timenumber))
-# elif '주' in time:
-#     # 주일 경우 작성 시간 확인
-#     timenumber = time[0:time.find('주')]
-#     writetime = datetime.today() - timedelta(weeks=int(timenumber))
-# elif '개월' in time:
-#     # 개월일 경우 작성 시간 확인
-#     timenumber = time[0:time.find('개월')]
-#     delta = relativedelta(months=int(timenumber))
-#     writetime = datetime.today() - delta
-# elif '년' in time:
-#     # 년일 경우 작성 시간 확인
-#     timenumber = time[0:time.find('년')]
-#     delta = relativedelta(years=int(timenumber))
-#     writetime = datetime.today() - delta
+for x in range(0, 29):
+
+    global writetime
+        
+    delta = ''
+    if '분' in time:
+        # 분일 경우 작성 시간 확인
+        timenumber = time[0:time.find('분')]
+        writetime = datetime.today() - timedelta(minutes=int(timenumber))
+    elif '시간' in time:
+        # 시간일 경우 작성 시간 확인
+        timenumber = time[0:time.find('시간')]
+        writetime = datetime.today() - timedelta(hours=int(timenumber))
+    elif '일' in time:
+        # 일일 경우 작성 시간 확인
+        timenumber = time[0:time.find('일')]
+        writetime = datetime.today() - timedelta(days=int(timenumber))
+    elif '주' in time:
+        # 주일 경우 작성 시간 확인
+        timenumber = time[0:time.find('주')]
+        writetime = datetime.today() - timedelta(weeks=int(timenumber))
+    elif '개월' in time:
+        # 개월일 경우 작성 시간 확인
+        timenumber = time[0:time.find('개월')]
+        delta = relativedelta(months=int(timenumber))
+        writetime = datetime.today() - delta
+    elif '년' in time:
+        # 년일 경우 작성 시간 확인
+        timenumber = time[0:time.find('년')]
+        delta = relativedelta(years=int(timenumber))
+        writetime = datetime.today() - delta
+
+# print(str(writetime))
 
 width = '560' # (Optional)
 height = '315' # (Optional)
@@ -117,12 +128,14 @@ utubeKey = firsturl[utubeKeyIndex + 9 : utubeKeyIndex + 9 + 11]
 
 # iframe = yt.video(url, width=width, height=height)
 
+"""
 print(str(len(all_title)))
 print(title)
 print(str(len(all_url)))
 print(firsturl)
 print(str(len(time)))
 print(time)
+"""
 
 # webdriver를 종료한다.
 driver.close()
