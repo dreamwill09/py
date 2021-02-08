@@ -121,7 +121,7 @@ print(str(len(all_title)))
 print(title)
 print(str(len(all_url)))
 print(firsturl)
-print(str(len(all_time)))
+print(str(len(time)))
 print(time)
 
 # webdriver를 종료한다.
