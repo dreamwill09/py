@@ -1,3 +1,4 @@
+import sys
 # selenium에서 webdriver를 사용할 수 있게 webdriver를 import 한다.
 from selenium import webdriver
 # BeautifulSoup4를 import 한다.
@@ -9,7 +10,7 @@ from yt_iframe import yt
 # 월, 년 단위 계산 위해서 relativedelta를 import 한다.
 from dateutil.relativedelta import relativedelta
 
-# <p>제목</p><p><a>URL</a></p><p><iframe></p> 로 작성
+# <p>채널명 [1번만 표시]</p><p>제목</p><p><a>URL</a></p><p><iframe></p> 로 작성
 
 # 14F 일사에프 https://www.youtube.com/c/14FMBC/videos
 # Kurzgesagt – In a Nutshell https://www.youtube.com/c/inanutshell/videos
@@ -44,9 +45,6 @@ fromdate = datetime(yesterday.year, yesterday.month, yesterday.day, 7, 0, 0)
 # 당일 오전 6시 59분 59초
 todate = datetime(datetime.today().year, datetime.today().month, datetime.today().day, 6, 59, 59)
 
-# writetime global 변수로 선언
-
-
 # driver란 변수에 객체를 만들어 준다.
 driver = webdriver.Chrome(executable_path='chromedriver')
 
@@ -61,6 +59,12 @@ html = driver.page_source
 
 # html을 'lxml' parser를 사용하여 분석합니다.
 soup = BeautifulSoup(html, 'lxml')
+
+# channelname 조건에 맞는 모든 div 태그의 hidden style-scope paper-tooltip class들을 가져옵니다.
+allchannelname = soup.find_all('div', 'hidden style-scope paper-tooltip')
+
+# channelname 변수에 저장합니다.
+channelname = [soup.find_all('div','hidden style-scope paper-tooltip')[6].string for n in range(0,len(allchannelname))]
 
 # title 조건에 맞는 모든 a 태그의 class들을 가져옵니다.
 all_title = soup.find_all('a','yt-simple-endpoint style-scope ytd-grid-video-renderer')
@@ -81,61 +85,88 @@ all_time = soup.find_all('span','style-scope ytd-grid-video-renderer')
 # 분 전, 시간 전, 일 전, 주 전, 개월 전, 년 전
 time = [all_time[n].text for n in range(1,len(all_time),2)]
 
-for x in range(0, 29):
+iframe = ""
+width = '560' # (Optional)
+height = '315' # (Optional)
 
-    global writetime
-        
+# 파일 변수 글로벌로 이동
+nowDate = datetime.now()
+# 파일 작성 시간이 길어져서 년월일로 파일명 생성
+f = open(nowDate.strftime('%Y-%m-%d') + '_youtube.txt', mode='wt', encoding='utf-8')
+
+# 파일에 1번만 저장하도록 수정 필요
+fileContent = "<p>" + channelname[0] + "</p>"
+fileContent += "\n"
+
+for x in range(0, len(time)-1):
+
     delta = ''
-    if '분' in time:
+
+    if '분' in time[x]:
         # 분일 경우 작성 시간 확인
-        timenumber = time[0:time.find('분')]
+        timenumber = time[x][0:time[x].find('분')]
         writetime = datetime.today() - timedelta(minutes=int(timenumber))
-    elif '시간' in time:
+    elif '시간' in time[x]:
         # 시간일 경우 작성 시간 확인
-        timenumber = time[0:time.find('시간')]
+        timenumber = time[x][0:time[x].find('시간')]
         writetime = datetime.today() - timedelta(hours=int(timenumber))
-    elif '일' in time:
+    elif '일' in time[x]:
         # 일일 경우 작성 시간 확인
-        timenumber = time[0:time.find('일')]
+        timenumber = time[x][0:time[x].find('일')]
         writetime = datetime.today() - timedelta(days=int(timenumber))
-    elif '주' in time:
+    elif '주' in time[x]:
         # 주일 경우 작성 시간 확인
-        timenumber = time[0:time.find('주')]
+        timenumber = time[x][0:time[x].find('주')]
         writetime = datetime.today() - timedelta(weeks=int(timenumber))
-    elif '개월' in time:
+    elif '개월' in time[x]:
         # 개월일 경우 작성 시간 확인
-        timenumber = time[0:time.find('개월')]
+        timenumber = time[x][0:time[x].find('개월')]
         delta = relativedelta(months=int(timenumber))
         writetime = datetime.today() - delta
     elif '년' in time:
         # 년일 경우 작성 시간 확인
-        timenumber = time[0:time.find('년')]
+        timenumber = time[x][0:time[x].find('년')]
         delta = relativedelta(years=int(timenumber))
         writetime = datetime.today() - delta
 
-# print(str(writetime))
+    utubeKey = ""       # 유튜브 키값 초기화
+    url = ""            # url 초기화
+    iframe = ""         # iframe 초기화
 
-width = '560' # (Optional)
-height = '315' # (Optional)
-finalurl ='' # 임시
+    utubeKey = firsturl[x][9 : 9 + 11]
+    url = 'https://www.youtube.com/watch?v=' + str(utubeKey)
+    iframe = yt.video(url, width=width, height=height)
 
-utubeKey = ""       # 유튜브 키값 초기화
-utubeKeyIndex = 0   # 유튜브 키 체크값 초기화
-finalurl = ""       # url 초기화
+    if(writetime > todate):
+        print("작성 안 하고, 다음 URL 조회")
+        print(title[x])
+        print(url)
+        print(writetime)
+        pass
+    elif writetime <= fromdate:
+        print("작성 대상 아님 - 더이상 URL 조회하지 않음")
+        print(title[x])
+        print(url)
+        print(writetime)
+        sys.exit()      
+    else:
+        print("작성 대상 맞음")
+        print(title[x])
+        print(url)
+        print(writetime)
 
-utubeKey = firsturl[utubeKeyIndex + 9 : utubeKeyIndex + 9 + 11]
-# url = 'https://www.youtube.com/watch?v=' + utubeKey
-
-# iframe = yt.video(url, width=width, height=height)
-
-"""
-print(str(len(all_title)))
-print(title)
-print(str(len(all_url)))
-print(firsturl)
-print(str(len(time)))
-print(time)
-"""
+        # 파일에 저장 (계속)
+        fileContent += "<p>" + title[x] + "</p>" # 게시글 제목 앞에 <p> 추가, 제목 뒤에 </p> 추가. 2021.01.03 추가
+        fileContent += "\n"
+        fileContent += '<p><a target=_blank href="' + url + '">' + url + '</a></p>'
+        fileContent += "\n"
+        fileContent += "<p>" + iframe + "</p>"
+        fileContent += "\n"
+        
+        if (f is not None) and f.write(fileContent):
+            print("fileContent write OK ")
+        else:
+            f.close
 
 # webdriver를 종료한다.
 driver.close()
