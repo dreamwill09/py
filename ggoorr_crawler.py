@@ -305,10 +305,10 @@ def searchList(page):
                 todate = datetime(datetime.today().year, datetime.today().month, datetime.today().day, 6, 59, 59)
 
                 if(writetime > todate):
-                    print("작성은 안하지만, 다음 게시물 조회")
+                    print("작성 안 하고, 다음 게시물 조회")
                     pass
                 elif writetime <= fromdate:
-                    print("작성 대상 아님 - 더이상 게시물 조회하지 않음")
+                    print("작성 대상 아님 - 더 이상 게시물 조회하지 않음")
                     return False
                 else :
                     print("작성 대상 맞음")
