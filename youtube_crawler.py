@@ -45,7 +45,7 @@ fromdate = datetime(yesterday.year, yesterday.month, yesterday.day, 7, 0, 0)
 # 당일 오전 6시 59분 59초
 todate = datetime(datetime.today().year, datetime.today().month, datetime.today().day, 6, 59, 59)
 
-# driver란 변수에 객체를 만들어 준다.
+# driver란 변수에 객체를 만들어 준다. chromedriver는 파이썬이 있는 경로에 두거나, 다른 경로에 두면 전체 경로명을 다 적어 줍니다.
 driver = webdriver.Chrome(executable_path='chromedriver')
 
 # 원하는 사이트의 url을 입력하여 사이트를 연다.
