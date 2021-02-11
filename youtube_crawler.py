@@ -66,6 +66,10 @@ allchannelname = soup.find_all('div', 'hidden style-scope paper-tooltip')
 # channelname 변수에 저장합니다.
 channelname = [soup.find_all('div','hidden style-scope paper-tooltip')[6].string for n in range(0,len(allchannelname))]
 
+# 채널명에 줄 바꿈이 있어서 제거합니다.
+for i in range(len(channelname)):
+    channelname[i] = channelname[i].replace("\n", "")
+
 # title 조건에 맞는 모든 a 태그의 class들을 가져옵니다.
 all_title = soup.find_all('a','yt-simple-endpoint style-scope ytd-grid-video-renderer')
 
