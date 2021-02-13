@@ -1,6 +1,8 @@
 # 시스템 함수 sys를 import 한다.
 import sys
 # selenium에서 webdriver를 사용할 수 있게 webdriver를 import 한다.
+# https://sites.google.com/a/chromium.org/chromedriver/home 
+# 에서 크롬 버전에 맞는 크롬드라이버를 다운로드 후 Scripts 폴더로 복사하기
 from selenium import webdriver
 # BeautifulSoup4를 import 한다.
 from bs4 import BeautifulSoup
@@ -14,6 +16,7 @@ from dateutil.relativedelta import relativedelta
 import re
 # 파일 존재 여부 확인 위한 os를 import 한다.
 import os
+# lxml 설치 필요합니다 (pip install lxml)
 
 # <p>채널명 [1번만 표시]</p><p>제목</p><p><a>URL</a></p><p><iframe></p> 로 작성
 
@@ -210,13 +213,13 @@ for u in range(0, len(urllist)):
         iframe = yt.video(url, width=width, height=height)
 
         if(writetime > todate):
-            print("작성 안 하고, 다음 URL 조회 (당일 7시 이후)")
+            print("작성 대상 아님 (당일 7시 이후)")
             print(title[x])
             print(url)
             print(writetime)
             pass
         elif writetime <= fromdate:
-            print("작성 안 하고, 다음 URL 조회 (전일 7시 미만)")
+            print("작성 대상 아님 (전일 7시 미만)")
             print(title[x])
             print(url)
             print(writetime)            
