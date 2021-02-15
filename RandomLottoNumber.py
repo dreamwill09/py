@@ -8,7 +8,8 @@ count = int(input("로또 번호를 몇개 생성할까요?> "))
 
 for m in range(count):
 
-      lotto=[]
+      lotto = []
+      sumlotto = []
 
       a=random.choices(range(1,46))
 
@@ -26,4 +27,4 @@ for m in range(count):
 
       lotto.sort()
 
-print(lotto)
+      print(lotto)
