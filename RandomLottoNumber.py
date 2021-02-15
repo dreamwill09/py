@@ -4,22 +4,26 @@ print('Lotto')
 
 import random
 
-lotto=[]
+count = int(input("로또 번호를 몇개 생성할까요?> "))
 
-a=random.choices(range(1,46))
+for m in range(count):
 
-b=a[0]
+      lotto=[]
 
-for i in range(6):
+      a=random.choices(range(1,46))
 
-      while b in lotto:
+      b=a[0]
 
-              a=random.choices(range(1,46))
+      for i in range(6):
 
-              b=a[0]
+            while b in lotto:
 
-      lotto.append(b)
+                  a=random.choices(range(1,46))
 
-lotto.sort()
+                  b=a[0]
+
+            lotto.append(b)
+
+      lotto.sort()
 
 print(lotto)
