@@ -6,10 +6,12 @@ import random
 
 count = int(input("로또 번호를 몇개 생성할까요?> "))
 
+sumlotto = []
+no = []
+
 for m in range(count):
 
-      lotto = []
-      sumlotto = []
+      lotto = []      
 
       a=random.choices(range(1,46))
 
@@ -27,4 +29,13 @@ for m in range(count):
 
       lotto.sort()
 
-      print(lotto)
+      # print(str(m+1) + " : " + str(lotto))
+
+      sumlotto += lotto
+
+print(sumlotto)
+
+# for c in range(1,45+1):
+#       # print(str(c))
+#       no1 = sumlotto.count(1)
+#       print(str(c) + " : " + str(no[c]))
