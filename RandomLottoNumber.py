@@ -6,6 +6,8 @@ import random
 from collections import Counter
 # pprint 의 pprint 모듈을 import 한다.
 from pprint import pprint
+# 일시 정지 기능 사용 위해서 os 모듈을 import 한다.
+import os
 
 # 횟수를 입력 받음
 count = int(input("로또 번호를 몇 게임 생성할까요?> "))
@@ -47,6 +49,8 @@ print("RESULT")
 print("Number: (frequency)")
 pprint(frequency)
 print("######################")
+print("아무 키나 누르면 종료합니다")
+os.system('Pause')
 
 # PY -> EXE 
 # pip install pyinstaller
