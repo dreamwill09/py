@@ -2,11 +2,13 @@ print('Lotto')
 
 # random을 import 한다.
 import random
-
+# counter 의 collections 모듈을 import 한다. 
 from collections import Counter
+# pprint 의 pprint 모듈을 import 한다.
+from pprint import pprint
 
 # 횟수를 입력 받음
-count = int(input("로또 번호를 몇 개 생성할까요?> "))
+count = int(input("로또 번호를 몇 게임 생성할까요?> "))
 
 sumlotto = []
 no = []
@@ -40,4 +42,13 @@ print(sumlotto)
 frequency = Counter(sumlotto)
 
 # 로또 번호별 빈도를 보여줍니다
-print(frequency)
+print("######################")
+print("RESULT")
+print("Number: (frequency)")
+pprint(frequency)
+print("######################")
+
+# PY -> EXE 
+# pip install pyinstaller
+# pyinstaller.exe -F -n RandomLottoNumber.exe RandomLottoNumber.py
+# 콘솔창 없이(-n) 하나의 파일(-F)로 생성
