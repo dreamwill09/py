@@ -13,7 +13,6 @@ import os
 count = int(input("로또 번호를 몇 게임 생성할까요?> "))
 
 sumlotto = []
-no = []
 a = []
 b = 0
 
